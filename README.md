@@ -16,4 +16,4 @@ docker-compose up
 Provides curl examples of the API
 
 ### client/main.go
-Simple client application in go
+Simple client application written in Go.
