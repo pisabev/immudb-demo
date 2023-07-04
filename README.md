@@ -1,6 +1,6 @@
 # immudb-demo
 
-Simple application for working with immudb using REST API
+Application for working with immudb using REST API
 
 ### Deploy
 Running the applicatoin using `docker-compose`
