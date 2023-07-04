@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ./
+    depends_on:
+      - immudb
+    image: pisabev/immudb-demo
+    ports:
+      - "8080:8080"
+  immudb:
+    image: codenotary/immudb
+    volumes:
+      - data:/var/lib/immudb
+    ports:
+      - "3322:3322"
+      - "8081:8080"
+volumes:
+  data:
