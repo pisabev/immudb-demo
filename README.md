@@ -1,10 +1,10 @@
 # immudb-demo
 
-Application for working with immudb using REST API
+Writes logs to immudb using REST API
 
 ### Exposed addresses and ports:
 
-##### API: http://localhost:8080/api/v1 - *using basic HTTP Authentication - [RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235)*
+##### API: http://localhost:8080/api/v1 - *uses basic HTTP Authentication - [RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235)*
 
 ##### Immudb client: http://localhost:8081
 ##### Immudb-demo client: http://localhost:8080/
