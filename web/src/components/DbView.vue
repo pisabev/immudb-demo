@@ -30,18 +30,12 @@ export default {
 }
 </script>
 
-<style scoped>
-a {
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-}
+<style scoped lang="scss">
 .data {
   margin-top:20px;
-}
-table {
-  width: 1000px;
-  margin: 0 auto;
+  table {
+    width: 1000px;
+    margin: 0 auto;
+  }
 }
 </style>
