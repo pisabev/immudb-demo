@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOST=localhost:8080
+HOST=immudb:immudb@localhost:8080
 
 # Log Insert
 curl -X POST http://$HOST/api/v1/log \

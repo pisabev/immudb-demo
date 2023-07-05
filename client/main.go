@@ -3,32 +3,74 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"time"
 )
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randSeq(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
+
 func main() {
-	host := "localhost:8080"
-	err := insertLogs(host, []*Log{
-		{Data: "test 1", Source: "test 1"},
-		{Data: "test 2", Source: "test 2"},
-	})
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	fHost := flag.String("address", "immudb:immudb@localhost:8080", "API Address/port")
+	fInsert := flag.Bool("insert", false, "Inserts a random log line")
+	fQueryAll := flag.Bool("query-all", false, "Fetch all logs")
+	fQueryLast := flag.Int("query-last", 0, "Fetch last X logs")
+	fCount := flag.Bool("count", false, "Show logs count")
+	flag.Parse()
+
+	if *fInsert {
+		l := Log{Data: fmt.Sprintf("test %v", randSeq(5)), Source: fmt.Sprintf("test %v", randSeq(5))}
+		err := insertLogs(*fHost, []*Log{&l})
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println("Inserted", l)
 	}
 
-	res, err := getLogs(host)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	if *fQueryAll {
+		res, err := getLogs(*fHost, 0)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		for _, r := range res {
+			fmt.Println(r.Id, r.Data, r.DateTime, r.Source)
+		}
 	}
-	for _, r := range res {
-		fmt.Println(r.Id, r.Data, r.DateTime, r.Source)
+
+	if *fQueryLast != 0 {
+		res, err := getLogs(*fHost, *fQueryLast)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		for _, r := range res {
+			fmt.Println(r.Id, r.Data, r.DateTime, r.Source)
+		}
 	}
+
+	if *fCount {
+		res, err := getLogs(*fHost, 0)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println(len(res), "logs")
+	}
+
 }
 
 type Log struct {
@@ -38,8 +80,12 @@ type Log struct {
 	Source   string    `json:"source"`
 }
 
-func getLogs(host string) (result []*Log, err error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("http://%v/api/v1/log", host), nil)
+func getLogs(host string, lastx int) (result []*Log, err error) {
+	url := fmt.Sprintf("http://%v/api/v1/log", host)
+	if lastx != 0 {
+		url = fmt.Sprintf("http://%v/api/v1/log?lastx=%v", host, lastx)
+	}
+	req, _ := http.NewRequest("GET", url, nil)
 
 	res, err := http.DefaultClient.Do(req)
 

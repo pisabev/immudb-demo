@@ -9,6 +9,7 @@ import (
 	"immudb-demo/internal/api"
 	model "immudb-demo/internal/model"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/codenotary/immudb/pkg/stdlib"
@@ -34,6 +35,8 @@ func parseConfig() (c cfg) {
 
 func main() {
 	c := parseConfig()
+	var auth = gin.Accounts{c.Username: c.Password}
+
 	dsn := fmt.Sprintf("immudb://%s:%s@%s:%s/%s?sslmode=disable", c.Username,
 		c.Password, c.IpAddr, c.Port, c.DBName)
 
@@ -60,9 +63,15 @@ func main() {
 
 	// Setup endpoints
 	gr := router.Group("api/v1")
-	gr.GET("/log", api.FetchLog)
-	gr.POST("/log", api.InsertLog)
-	gr.POST("/logs", api.InsertLogBatch)
+	gr.GET("/log", gin.BasicAuth(auth), api.FetchLog)
+	gr.POST("/log", gin.BasicAuth(auth), api.InsertLog)
+	gr.POST("/logs", gin.BasicAuth(auth), api.InsertLogBatch)
+
+	// Serve static
+	router.Use(static.Serve("/", static.LocalFile("./public", true)))
+	router.NoRoute(func(c *gin.Context) {
+		c.File("./public/index.html")
+	})
 
 	router.Run()
 }
