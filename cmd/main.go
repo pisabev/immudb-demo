@@ -57,7 +57,7 @@ func main() {
 	router.Use(func(context *gin.Context) {
 		context.Set("dsn", dsn)
 		context.Set("getRepo", func(c *gin.Context) (model.MyLogRepository, error) {
-			return model.NewMyLogImmudbRepo(c, c.GetString("dsn")) //nolint:wrapcheck
+			return model.NewMyLogImmudbRepo(c, c.GetString("dsn"))
 		})
 	})
 

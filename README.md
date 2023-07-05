@@ -2,21 +2,20 @@
 
 Writes logs to immudb using REST API
 
-### Exposed addresses and ports:
-
-##### API: http://localhost:8080/api/v1 - *uses basic HTTP Authentication - [RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235)*
-
-##### Immudb client: http://localhost:8081
-##### Immudb-demo client: http://localhost:8080/
-
-
-### Deploy
+### Install
 Running the applicatoin using `docker-compose`
 ```bash
 git clone git@github.com:pisabev/immudb-demo.git
 cd immudb-demo
 docker-compose up
 ```
+
+### Exposed addresses and ports:
+
+##### API: http://localhost:8080/api/v1 - *uses basic HTTP Authentication - [RFC 7235](https://datatracker.ietf.org/doc/html/rfc7235) (Username: immudb, Password: immudb)*
+
+##### Immudb client: http://localhost:8081
+##### Immudb-demo client: http://localhost:8080/
 
 ## Client service
 

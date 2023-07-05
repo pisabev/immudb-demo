@@ -17,7 +17,7 @@
 <script>
 
 export default {
-  name: 'Table',
+  name: 'TableView',
   props: {
     fields: {
       type: Array
@@ -29,9 +29,15 @@ export default {
 <style scoped lang="scss">
 table {
   background: #000000;
+  border-spacing: 1px;
   td, th {
-    background: #0d3049;
     padding: 10px;
+  }
+  td {
+    background: #1a2c39;
+  }
+  th {
+    background: #1e282f
   }
 }
 

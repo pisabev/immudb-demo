@@ -18,10 +18,8 @@ COPY cmd ./cmd
 COPY internal ./internal
 COPY --from=client web/dist ./public
 
-# Build
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./app ./cmd/main.go
 
 EXPOSE 8080
 
-# Run
 CMD ["/immudb-demo/app"]
