@@ -1,6 +1,6 @@
 # immudb-demo
 
-Writes logs to immudb using REST API
+Write logs to immudb using REST API
 
 ### Install
 Running the applicatoin using `docker-compose`
